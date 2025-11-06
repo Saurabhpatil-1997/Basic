@@ -1,0 +1,32 @@
+#Python Email.mime
+
+import smtplib
+from email.mime.text import MIMEText
+import traceback
+    # ------------------- EMAIL FUNCTION -------------------
+    def send_email(subject, body, sender, recipients, password):
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = sender
+        msg['To'] = ', '.join(recipients)
+
+        smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+
+        try:
+            smtp_server.login(sender, password)
+            smtp_server.sendmail(sender, recipients, msg.as_string())
+            print("Email sent successfully!")
+        except Exception as e:
+            print(f"Error sending email: {e}")
+        finally:
+            smtp_server.quit()
+
+        print("Exception Block Triggered!")
+        traceback_info = traceback.format_exc()
+        subject = "dlbehaviors Error"
+        sender = "datateam2@kippbaltimore.org"
+        recipients = ["sds@inspirozit.com","rmroczek@kippbaltimore.org","datateam@kippbaltimore.org"]
+        password = "trgk goza tlxg tmuh"
+        body = f"Error details:\n{traceback_info}"
+        print(body)
+        send_email(subject, body, sender, recipients, password)
